@@ -1,0 +1,74 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+from collections import defaultdict
+# Complete the bfs function below.
+
+def bfs(n,m,graph,s):
+    visited,queue,visitor = [],[],[]
+    level,lvl = 0,0
+    lst = [-1]*n
+    lst[s-1] = 0
+    #now root node is 1
+    visited.append(s)
+    #visitor.append((s,0))
+    queue.append((s,0)) # Adding root node in queue
+    
+    while queue : 
+        #print(queue)
+        pla,lvl = queue.pop(0)
+        if lvl > level:
+            level +=1
+
+        #print(s)
+
+        for neighbour in graph[pla]:
+
+            if neighbour not in visited:
+                visited.append(neighbour)
+                #print(visited)
+                visitor.append((neighbour,level+1))
+                queue.append((neighbour,level+1))
+    
+    visitor.sort()
+    #print(visitor)
+    
+    for visit in visitor:
+        
+            
+        lst[visit[0]-1] = visit[1]*6
+    
+    lst = [x for x in lst if x!=0]
+    return lst
+
+
+
+
+q = int(input())
+
+for qu in range(q):
+    nm = [int(x) for x in input().split()]
+    n,m = nm[0],nm[1]
+    #print(n,m)
+    graph = defaultdict(list)
+
+    for i in range(m):
+        inp = [int(x) for x in input().split()]
+        inp.sort()
+
+        graph[inp[0]].append(inp[1])
+        graph[inp[1]].append(inp[0])
+
+    s = int(input())
+    #print(s)
+    k = bfs(n,m,graph,s)
+    print(*k)
+
+
+
+
+    
