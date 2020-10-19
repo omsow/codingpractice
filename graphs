@@ -64,7 +64,7 @@ edges. The nodes in this tree are indexed from 1 to N. Consider node indexed 1 t
 
 Input Format
 
-The first line consists of a single integer N denoting the number of nodes in the tree. Each of the next
+The first line consists of a single integer N denoting the number of nodes in the tree. Each of the next n-1
 
 lines consists of 2 integers a and b denoting an undirected edge between node a and node b. The next line consists of a single integer x.
 
