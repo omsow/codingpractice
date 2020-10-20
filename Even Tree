@@ -1,0 +1,56 @@
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+from collections import defaultdict
+# Complete the evenForest function below.
+curr_size = [0]*100
+
+def size_nodes(edges,s,e):
+    
+   
+    curr_size[s] = 1   #this is the curr_size of nodes
+    for u in edges[s]:
+        if u ==e:
+            continue   #Skip the cases wherein it is counted twice
+        size_nodes(edges,u,s)
+
+        curr_size[s] += curr_size[u]
+
+    #print(curr_size)
+    return curr_size
+
+
+
+
+
+t_nodes, t_edges = map(int, input().rstrip().split())
+
+t_from = [0] * t_edges
+t_to = [0] * t_edges
+edges = defaultdict(list)
+
+for i in range(t_edges):
+
+    t_from[i], t_to[i] = map(int, input().rstrip().split())
+    
+    edges[t_from[i]].append((t_to[i]))
+    edges[t_to[i]].append((t_from[i]))
+
+
+#Driver Code
+
+p = size_nodes(edges,1,0) #s = 1 here because 1 is taken to be root node
+
+k = [x for x in p if x!=0]
+
+k.pop(0)
+even = [x for x in k if x%2
+==0]
+
+print(len(even))
