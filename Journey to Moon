@@ -1,0 +1,94 @@
+#!/bin/python3
+#link to question : https://www.hackerrank.com/challenges/journey-to-the-moon/problem?isFullScreen=true
+import math
+import os
+import random
+import re
+import sys
+from collections import Counter
+# Complete the journeyToMoon function below.
+def find(parent,x):
+    if parent[x] != x:
+        parent[x] = find(parent,parent[x])
+    return parent[x]
+
+def union(parent,rank,x,y):
+
+    x_set = find(parent,x)
+    y_set = find(parent,y)
+
+    if rank[x] > rank[y]:
+        parent[y] = x
+    elif rank[y] > rank[x]:
+        parent[x] = y
+    else :
+        parent[y] = x
+        rank[x] += 1
+
+'''the problem i am facing is that there are two ROOT parent for the same tree, i think the union has some fault , so i sorted it by updating the parent root by taking one more loop (not nested loop), independent of previous loop so that values will be updates (e.g lets say initially parent[4]=1 and parent[1]=1 and now if parent[1] becomes =0, parent[4] shld also become 0 but it remain 1, my other loop solves this, but then there's timeout in one case, plz check it)'''
+
+def journeyToMoon(n, astronaut):
+    
+    
+    #So I will be using disjoint sets to solve this question
+    
+    parent,rank = [],[]
+    sets = []
+    for i in range(n):
+        parent.append(i)
+        rank.append(0)
+   
+    
+    
+    for i in astronaut:
+        j,k = i[0],i[1]
+        x = find(parent,j)
+        y = find(parent,k)
+        #print(x,y)
+        if x != y:
+            union(parent,rank,x,y)
+            #print(find(parent,j),find(parent,k))
+
+    for i in astronaut:
+        j,k = i[0],i[1]
+        x = find(parent,j)
+        y = find(parent,k)
+        #print(x,y)
+        if x != y:
+            union(parent,rank,x,y)
+            #print(find(parent,j),find(parent,k))
+            
+    #print(find(parent,1))
+    #print(find(parent,4))
+    
+    
+    lst = list(Counter(parent).values())
+
+    
+    sm = 0
+
+    for i in range(len(lst)-1):
+        
+        sm += sum(lst[i+1:])*lst[i]
+    return sm
+    
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    np = input().split()
+
+    n = int(np[0])
+
+    p = int(np[1])
+
+    astronaut = []
+
+    for _ in range(p):
+        astronaut.append(list(map(int, input().rstrip().split())))
+
+    result = journeyToMoon(n, astronaut)
+
+    fptr.write(str(result) + '\n')
+
+    fptr.close()
