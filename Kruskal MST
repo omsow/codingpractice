@@ -13,7 +13,7 @@ def find(parent,p):
     if parent[p] == p:
         return p
     return find(parent,parent[p])
-    
+# in above i don't think path compression is used , it shld be if parent[p] != p: parent[p] = find(parent,parent[p]) else : return p   
 
 def union(parent,rank,x,y):
     
