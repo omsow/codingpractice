@@ -1,0 +1,88 @@
+#!/bin/python3
+#Link to question : https://www.hackerrank.com/challenges/kruskalmstrsub/problem?isFullScreen=true
+import math
+import os
+import random
+import re
+import sys
+from collections import defaultdict
+
+
+def find(parent,p):
+    #print(parent[p-1],p)
+    if parent[p] == p:
+        return p
+    return find(parent,parent[p])
+    
+
+def union(parent,rank,x,y):
+    
+    xroot = find(parent, x) 
+    yroot = find(parent, y) 
+    
+    if rank[xroot] < rank[yroot]: 
+        parent[xroot] = yroot 
+    elif rank[xroot] > rank[yroot]: 
+        parent[yroot] = xroot 
+  
+         
+    else : 
+        parent[yroot] = xroot 
+        rank[xroot] += 1
+
+def kruskals(g_nodes, g_from, g_to, g_weight):
+    
+    
+    lst = [(g_from[i]-1,g_to[i]-1,g_weight[i]) for i in range(len(g_to))]
+
+    lst = sorted(lst,key=lambda item: (item[2],item[0]+item[1]+item[2]))
+
+    #print(lst)
+
+    result =[]  
+    V = g_nodes
+    i = 0 
+    e = 0 
+    parent = [] ; rank = [] 
+
+     
+    for node in range(V): 
+        parent.append(node) 
+        rank.append(0) 
+    
+    
+    while e < V -1 : 
+
+        
+        u,v,w =  lst[i] 
+        i = i + 1
+        x = find(parent, u) 
+        y = find(parent ,v) 
+
+        
+        if x != y: 
+            e = e + 1     
+            result.append([u,v,w]) 
+            union(parent, rank, x, y)             
+        
+
+    #print(result)
+    print(sum([x[2] for x in result]))
+
+g_nodes, g_edges = map(int, input().rstrip().split())
+
+g_from = [0] * g_edges
+g_to = [0] * g_edges
+g_weight = [0] * g_edges
+edges = defaultdict(list)
+
+for i in range(g_edges):
+    g_from[i], g_to[i], g_weight[i] = map(int, input().rstrip().split())
+
+    
+
+res = kruskals(g_nodes, g_from, g_to, g_weight)
+
+   
+
+    
