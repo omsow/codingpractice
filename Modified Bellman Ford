@@ -1,0 +1,49 @@
+class Graph:  
+  
+    def __init__(self, vertices):  
+        self.V = vertices # No. of vertices  
+        self.graph = []  
+  
+    # function to add an edge to graph  
+    def addEdge(self, u, v, w):  
+        self.graph.append([u, v, w])     
+      
+  
+    def BellmanFord(self, src):  
+  
+        # Step 1: Initialize distances from src to all other vertices  
+        # as INFINITE  
+        dist = [float("Inf")] * self.V  
+        dist[src] = 0
+
+        i = 1 #this is same as S-1 in the question
+          
+        for _ in range(i):  
+             
+            temp = dist[:]
+            for u, v, w in self.graph:  
+                if temp[u] != float("Inf") and temp[u] + w < temp[v]:  
+                    dist[v] = temp[u] + w  
+                
+            
+          
+  
+        #**** This modified bellman ford is for the condition when we have to travel along shortest path using atmost i edges.  ******
+  
+      
+        return(dist)                
+        # print all distance  
+        
+  
+g = Graph(5)  
+g.addEdge(0, 1, 2)  
+g.addEdge(1, 2, 30)  
+g.addEdge(0, 2, 40)
+g.addEdge(0, 3, 200)
+g.addEdge(0, 4, 300)
+g.addEdge(2, 3, 80)
+g.addEdge(3, 4, 50)
+  
+  
+# Print the solution  
+g.BellmanFord(0)  #O is source
